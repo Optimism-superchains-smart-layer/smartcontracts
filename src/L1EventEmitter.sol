@@ -4,19 +4,25 @@ pragma solidity ^0.8.13;
 contract L1EventEmitter {
 
     event EmittedEvent(string indexed name);
-    
-    uint8 public val;
 
     function emitEvent() public {
         emit EmittedEvent("EventEmitted");
     }
 
-    function hookFn() public {
-        addOneToVal();
-    }
-
-    function addOneToVal() public {
-        val += 1;
-    }
 }
-      
+
+
+// emitEvent() Tx
+// blockHash               0xc33e77b58fce3b6e78950d826c1ccb600082ef981d53e28882f5120c629823eb
+// blockNumber             9485281
+// contractAddress         
+// cumulativeGasUsed       1041559
+// effectiveGasPrice       3000000123
+// gasUsed                 22416
+// logs                    [{"address":"0x9febdeebcabebd0ed772ff7b00c93be6b3d05e81","topics":["0x211750fe893a4722a5aac6c19fb345e8f3a19629ef3598cd5e3f89d8cb91eb44","0x51c93f6e4703ae90f75338f29bffbe9c1662200cee981f49afeec26e892debcd"],"data":"0x","blockHash":"0xc33e77b58fce3b6e78950d826c1ccb600082ef981d53e28882f5120c629823eb","blockNumber":"0x90bbe1","transactionHash":"0xb78bf39a6eb03a4a6d9132fcf4b39334868825fa78d6a8eeab056c759ad28274","transactionIndex":"0x4","logIndex":"0x16","removed":false}]
+// logsBloom               0x00000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000400400000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000100000000020000000000000000000000000000000000000000000000000000000000000020000000000000000000
+// root                    
+// status                  1
+// transactionHash         0xb78bf39a6eb03a4a6d9132fcf4b39334868825fa78d6a8eeab056c759ad28274
+// transactionIndex        4
+// type                    2

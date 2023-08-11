@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {Test, console2} from "forge-std/Test.sol";
+import { Test, console2 } from "forge-std/Test.sol";
 import { EventRegistry } from "../src/EventRegistry.sol";
 
 contract EventRegistryTest is Test {
@@ -11,10 +11,20 @@ contract EventRegistryTest is Test {
         eventRegistry = new EventRegistry();
     }
 
-    function testSetEventToHook() public {
-        eventRegistry.setEventToHook("EmittedEvent(string)", "hookFn()");
-        // assertEq(counter.number(), 1)
+    function testSetEventDefinationToHook() public {
+        EventRegistry.EventDefination memory eventDefination = EventRegistry.EventDefination(
+            address(1),
+            address(2),
+            900,
+            "",
+            "",
+            5, 
+            EventRegistry.Status.ToBeExecuted,
+            hex"2acb"
+        );
+        eventRegistry.setEventDefinationToHook(9398487, eventDefination);
+       
     }
 
-
+   
 }

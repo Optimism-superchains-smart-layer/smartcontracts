@@ -16,11 +16,5 @@ contract L1EventEmitterTest is Test {
         // assertEq(counter.number(), 1)
     }
 
-    function testHookFn() public {
-        l1EventEmitter.hookFn();
-
-        assertEq(l1EventEmitter.val(), 1);
-    }
-
 
 }
