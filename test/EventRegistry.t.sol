@@ -12,26 +12,38 @@ contract EventRegistryTest is Test {
     }
 
     function testSetEventDefinationToHook() public {
+        EventRegistry.Hook memory hook = EventRegistry.Hook (
+            "",
+            hex"",
+            1
+        );
+
         EventRegistry.EventDefination memory eventDefination = EventRegistry.EventDefination(
             address(1),
             address(2),
             900,
             60,
+            hook,
             "",
-            "", 
             hex"2acb"
         );
         eventRegistry.setEventDefinationToHook(9398487, eventDefination);
     }
 
     function testLookUpEventDefinationToHook() public {
+        EventRegistry.Hook memory hook = EventRegistry.Hook (
+            "",
+            hex"",
+            1
+        );
+
         EventRegistry.EventDefination memory eventDefination = EventRegistry.EventDefination(
             address(1),
             address(2),
             900,
             60,
+            hook,
             "",
-            "", 
             hex"2acb"
         );
 
@@ -47,7 +59,7 @@ contract EventRegistryTest is Test {
             address(2),
             900,
             1,
-            "",
+            hook,
             "", 
             hex"2acb"
         );

@@ -6,7 +6,7 @@ contract EventRegistry {
     uint256 public TotalSubscribed;
 
     // updated by the sequencer in first block of an epoch
-    uint256 public currentL1BlockNumber;
+    uint256 public CurrentL1BlockNumber;
 
 
     struct EventDefination {
@@ -21,13 +21,22 @@ contract EventRegistry {
         // chain Id
         uint256 indexNo;
 
-        // event abi 
+        Hook hook;
+
+        // event abi (if left empty treat as EVM Block-Triggered Transactions)
         string eventName;
 
-        // function hook name
-        string hookName;
-
+        // in the case of an EVM Block-Triggered Transactions, pass in the block values
         bytes eventValue;
+    }
+
+    struct Hook {
+        // function hook name
+        string funcSignature;
+
+        bytes  params;
+
+        uint8  noArgs;
     }
 
 
@@ -35,7 +44,7 @@ contract EventRegistry {
 
 
     function setEventDefinationToHook(uint256 l1BlockNo, EventDefination memory eventDefination) public returns (EventDefination memory) {
-        require(l1BlockNo >= currentL1BlockNumber, "Err: Past BlockNO");
+        require(l1BlockNo >= CurrentL1BlockNumber, "Err: Past BlockNO");
 
         uint256 indexNo;
 
@@ -48,6 +57,22 @@ contract EventRegistry {
         L1BlockNoToEventDefination[l1BlockNo].push(eventDefination);
 
         return L1BlockNoToEventDefination[l1BlockNo][indexNo];
+    }
+
+    function setEventDefinationToHookOnNextL1Block(EventDefination memory eventDefination) public returns (EventDefination memory) {
+        uint256 NextL1Block = CurrentL1BlockNumber + 1;
+
+        uint256 indexNo;
+
+        TotalSubscribed += 1;
+
+        indexNo = L1BlockNoToEventDefination[NextL1Block].length;
+
+        eventDefination.indexNo = indexNo;
+
+        L1BlockNoToEventDefination[NextL1Block].push(eventDefination);
+
+        return L1BlockNoToEventDefination[NextL1Block][indexNo];
     }
 
     function removeEventDefinationToHook(uint256 indexNo, uint256 l1BlockNo) external {
@@ -63,9 +88,9 @@ contract EventRegistry {
     }
 
     function updateCurrentL1BlockNumber(uint256 blockNo) external  {
-        require(blockNo > currentL1BlockNumber);
+        require(blockNo > CurrentL1BlockNumber);
 
-        currentL1BlockNumber = blockNo;
+        CurrentL1BlockNumber = blockNo;
     }
 }
       
