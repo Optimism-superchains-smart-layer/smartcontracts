@@ -9,8 +9,9 @@ contract ContractScript is Script {
 
     function run() public {
         vm.broadcast();
-        new EventRegistry();
+        new EventRegistry();    
     }
 }
 
-
+     
+// forge script script/EventRegistry.s.sol:Deploy --private-key $DEPLOYER --broadcast --rpc-url ROLLUP_RPC_URL

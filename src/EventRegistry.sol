@@ -1,23 +1,14 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-// https://therealbytes.substack.com/p/presenting-ticking-optimism
 contract EventRegistry {
 
-    uint256 public TotalHooks;
+    uint256 public TotalSubscribed;
 
     // updated by the sequencer in first block of an epoch
     uint256 public currentL1BlockNumber;
 
-    enum Status {
-        Executed, // 0
-        StillExecuting, // 1
-        ToBeExecuted // 2
-    }
 
-    // sample usage: to reward smartcontract developers, based on the gas cost used by their smart contract
-    // we index a particular specified contract on L1 and make payment when, certain conditions are met
-    // I need and interface 
     struct EventDefination {
         // address of the contract emitting the event on L1
         address emitterAddr;
@@ -25,7 +16,10 @@ contract EventRegistry {
         // address of the contract with the hook on L2
         address hookAddr;
 
-        uint256 executionTime; 
+        uint256 l1BlockNo;
+
+        // chain Id
+        uint256 indexNo;
 
         // event abi 
         string eventName;
@@ -33,29 +27,39 @@ contract EventRegistry {
         // function hook name
         string hookName;
 
-        // chain Id
-        uint8 chainId;
-
-        Status status;
-
         bytes eventValue;
     }
 
-    // ( index => ( block number => EventDefinationToHook ))
-    mapping( uint256 => mapping(uint256 => EventDefination)) public EventDefinationToHook;
 
-    function setEventDefinationToHook(uint256 l1BlockNo, EventDefination memory eventDefination) public {
+    mapping (uint256 => EventDefination[]) public L1BlockNoToEventDefination;
+
+
+    function setEventDefinationToHook(uint256 l1BlockNo, EventDefination memory eventDefination) public returns (EventDefination memory) {
         require(l1BlockNo >= currentL1BlockNumber, "Err: Past BlockNO");
 
-        TotalHooks += 1;
+        uint256 indexNo;
 
-        EventDefinationToHook[TotalHooks][l1BlockNo] = eventDefination;
+        TotalSubscribed += 1;
+
+        indexNo = L1BlockNoToEventDefination[l1BlockNo].length;
+
+        eventDefination.indexNo = indexNo;
+
+        L1BlockNoToEventDefination[l1BlockNo].push(eventDefination);
+
+        return L1BlockNoToEventDefination[l1BlockNo][indexNo];
     }
 
-    function removeEventDefinationToHook(uint256 hookNo, uint256 l1BlockNo) external {
-        require(hookNo > 0);
+    function removeEventDefinationToHook(uint256 indexNo, uint256 l1BlockNo) external {
+        delete L1BlockNoToEventDefination[l1BlockNo][indexNo];
+    }
 
-        EventDefinationToHook[TotalHooks][l1BlockNo] = EventDefinationToHook[0][0];
+    function lookUpEventDefinationToHook(uint256 indexNo, uint256 l1BlockNo) public view returns (EventDefination memory) {
+        return L1BlockNoToEventDefination[l1BlockNo][indexNo];
+    }
+
+    function lookUpL1BlockNoToEventDefinationSize(uint256 l1BlockNo) public view returns (uint256) {
+        return L1BlockNoToEventDefination[l1BlockNo].length;
     }
 
     function updateCurrentL1BlockNumber(uint256 blockNo) external  {
@@ -73,6 +77,8 @@ contract EventRegistry {
 // Block: 13119879
 
 // cast send $EVENTREGISTRY_CONTRACT_ADDRESS "setEventDefinationToHook(address,address,uint256,string,string,uint8)" "(0x9feBdEEbCABEBd0ed772fF7b00C93be6B3d05E81,0xA48da8776ADD9870440A033D9322D0a0b51076BC,1102930,EmittedEvent(string),hookFn(),5)" --rpc-url https://opt-goerli.g.alchemy.com/v2/AzA3aKrNQoPWvKMtei2PJgF44obSXUVK  --private-key $PRIVATE_KEY
+// cast send $EVENTREGISTRY_CONTRACT_ADDRESS "setEventDefinationToHook(uint256,(address,address,uint256,string,string,uint8))" "12123" "(0x9feBdEEbCABEBd0ed772fF7b00C93be6B3d05E81,0xA48da8776ADD9870440A033D9322D0a0b51076BC,1102930,EmittedEvent(string),hookFn(),5)" --rpc-url https://opt-goerli.g.alchemy.com/v2/AzA3aKrNQoPWvKMtei2PJgF44obSXUVK  --private-key $PRIVATE_KEY
+// cast send $EVENTREGISTRY_CONTRACT_ADDRESS "setEventDefinationToHook(uint256,(address,address,uint256,string,string,uint8))" "12123" "(0x9feBdEEbCABEBd0ed772fF7b00C93be6B3d05E81,0xA48da8776ADD9870440A033D9322D0a0b51076BC,1102930,EmittedEvent(string),hookFn(),5)" --rpc-url  http://localhost:8545 --private-key $DEPLOYER
 
 
 
