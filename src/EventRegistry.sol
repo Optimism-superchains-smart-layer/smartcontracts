@@ -34,7 +34,7 @@ contract EventRegistry {
         // function hook name
         string funcSignature;
 
-        bytes  params;
+        string  params;
 
         uint8  noArgs;
     }
