@@ -1,0 +1,31 @@
+{
+  "transactions": [
+    {
+      "hash": null,
+      "transactionType": "CREATE",
+      "contractName": "L2Hook",
+      "contractAddress": "0x7cBF650F9BD0D3Ab63E499c6899468d92099775F",
+      "function": null,
+      "arguments": null,
+      "transaction": {
+        "type": "0x02",
+        "from": "0x7f75e3bb11becff0c792033740805a85f5657a6b",
+        "gas": "0x2342a",
+        "value": "0x0",
+        "data": "0x608060405234801561001057600080fd5b5061010b806100206000396000f3fe6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633c6bb4361460415780633fbd9c221460635780637c872d9e14606b575b600080fd5b600054604d9060ff1681565b60405160ff909116815260200160405180910390f35b60696071565b005b606960a1565b60008054600191908190608790849060ff1660a9565b92506101000a81548160ff021916908360ff160217905550565b60a76071565b565b60ff818116838216019081111560cf57634e487b7160e01b600052601160045260246000fd5b9291505056fea2646970667358221220ecd946101cb49cb076e6b6559040e531a4dfe371902066908cbe79d94207b3e364736f6c63430008130033",
+        "nonce": "0x8",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [],
+  "returns": {},
+  "timestamp": 1692048554,
+  "chain": 292929,
+  "multi": false,
+  "commit": "1d166c2"
+}

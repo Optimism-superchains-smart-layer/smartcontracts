@@ -14,9 +14,7 @@ contract EventRegistry {
         address emitterAddr;
 
         // address of the contract with the hook on L2
-        address hookAddr;
-
-        uint256 l1BlockNo;
+        address hookAddr;                                       
 
         // chain Id
         uint256 indexNo;
@@ -34,7 +32,7 @@ contract EventRegistry {
         // function hook name
         string funcSignature;
 
-        string  params;
+        string params;
 
         uint8  noArgs;
     }
